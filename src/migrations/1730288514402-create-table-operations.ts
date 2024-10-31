@@ -29,8 +29,23 @@ export class CreateTableOperations1730288514402 implements MigrationInterface {
             isNullable: false,
           },
           {
+            name: 'operator',
+            type: 'varchar',
+            isNullable: false,
+          },
+          {
             name: 'result',
             type: 'int',
+          },
+          {
+            name: 'created_at',
+            type: 'timestamp',
+            default: 'NOW()',
+          },
+          {
+            name: 'deleted_at',
+            type: 'timestamp',
+            default: 'NOW()',
           },
         ],
       }),

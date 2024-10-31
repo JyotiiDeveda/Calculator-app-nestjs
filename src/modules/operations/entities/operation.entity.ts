@@ -21,6 +21,11 @@ export class Operation {
 	})
 	operand2: number;
 
+	@Column({
+		nullable: false,
+	})
+	operator: string;
+
 	@Column()
 	result: number;
 }
