@@ -11,6 +11,7 @@ export const typeOrmConfig: TypeOrmModuleOptions & DataSourceOptions = {
 	password: String(process.env.DB_PASSWORD),
 	database: process.env.DB_NAME,
 	migrations: ['dist/src/migrations/*{.ts,.js}'],
+	entities: [__dirname + '/../**/*.entity.js'],
 	synchronize: false,
 	// logging: true,
 };
