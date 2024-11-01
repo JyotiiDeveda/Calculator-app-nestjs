@@ -38,6 +38,19 @@ export class OperationsController {
     return res.status(HttpStatus.BAD_REQUEST).send({message: "Failed to clear history"})
   }
 
-  
+  @Delete()
+  async reset(@Req() req: Request, @Res() res: Response) {
+    const email = req.headers['email'] as string; 
+
+    if (!email) {
+      throw new HttpException("Email required", HttpStatus.PRECONDITION_REQUIRED);
+    }
+
+    if(await this.operationsService.resetHistory()) {
+      return res.status(HttpStatus.OK).send({message: "Operation deleted successfully"})
+    }
+    return res.status(HttpStatus.BAD_REQUEST).send({message: "Failed to clear history"})
+
+  }
 }
 

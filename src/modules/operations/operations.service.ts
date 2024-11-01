@@ -76,4 +76,15 @@ export class OperationsService {
   }
 
 
+  async resetHistory(email: string) {
+    const deletedOperations = await this.operationRepository.delete({ email });
+    console.log("deletedOperation: ", deletedOperations);
+    if(!deletedOperations || deletedOperations?.affected <= 0) {
+      throw new HttpException(
+        "No Operations for given email",
+        HttpStatus.NOT_FOUND
+      )
+    }
+    return true;
+  }
 }
