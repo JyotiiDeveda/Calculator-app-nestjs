@@ -14,6 +14,7 @@ export class OperationsController {
     res.status(HttpStatus.CREATED).send({message: "Operation performed successfully", result})
   }
 
+
   @Get()
   async getUserHistory(@Req() req: Request, @Res() res: Response) {
     const email = req.headers['email'] as string; 
@@ -24,8 +25,13 @@ export class OperationsController {
 
     const result = await this.operationsService.userHistory(email);
     console.log("Result: ", result);
+
+    if(!result || result.length === 0) {
+      return res.status(HttpStatus.NOT_FOUND).send({message: "No user history found"})
+    }
     return res.send({ result }); // Send the result back to the client
   }
+
 
   @Delete(':id')
   async clear(@Param('id') id: string, @Res() res: Response) {
@@ -38,6 +44,7 @@ export class OperationsController {
     return res.status(HttpStatus.BAD_REQUEST).send({message: "Failed to clear history"})
   }
 
+
   @Delete()
   async reset(@Req() req: Request, @Res() res: Response) {
     const email = req.headers['email'] as string; 
@@ -46,7 +53,7 @@ export class OperationsController {
       throw new HttpException("Email required", HttpStatus.PRECONDITION_REQUIRED);
     }
 
-    if(await this.operationsService.resetHistory()) {
+    if(await this.operationsService.resetHistory(email)) {
       return res.status(HttpStatus.OK).send({message: "Operation deleted successfully"})
     }
     return res.status(HttpStatus.BAD_REQUEST).send({message: "Failed to clear history"})
