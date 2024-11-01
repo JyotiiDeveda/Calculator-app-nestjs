@@ -58,5 +58,9 @@ export class OperationsService {
     return result;
   }
 
+   userHistory(email: string): Promise<Operation[]> {
+    return this.operationRepository.find({ where: { email}});
+  }
+
   
 }

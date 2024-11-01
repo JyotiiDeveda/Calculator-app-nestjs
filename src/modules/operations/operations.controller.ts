@@ -14,5 +14,18 @@ export class OperationsController {
     res.status(HttpStatus.CREATED).send({message: "Operation performed successfully", result})
   }
 
+  @Get()
+  async getUserHistory(@Req() req: Request, @Res() res: Response) {
+    const email = req.headers['email'] as string; 
+
+    if (!email) {
+      throw new HttpException("Email required", HttpStatus.PRECONDITION_REQUIRED);
+    }
+
+    const result = await this.operationsService.userHistory(email);
+    console.log("Result: ", result);
+    return res.send({ result }); // Send the result back to the client
+  }
+
 }
 
