@@ -62,5 +62,18 @@ export class OperationsService {
     return this.operationRepository.find({ where: { email}});
   }
 
-  
+
+  async clearHistory(id: string) {
+    const deletedOperation = await this.operationRepository.delete({ id });
+    console.log("deletedOperation: ", deletedOperation);
+    if(!deletedOperation || deletedOperation?.affected <= 0) {
+      throw new HttpException(
+        "Operation to be deleted not found",
+        HttpStatus.NOT_FOUND
+      )
+    }
+    return true;
+  }
+
+
 }

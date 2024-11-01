@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Res, Req, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Body, Param, Res, Req, HttpException, HttpStatus } from '@nestjs/common';
 import { Response, Request } from 'express';
 import { OperationsService } from './operations.service';
 import { CreateOperationDto } from './dto/create-operation.dto';
@@ -27,5 +27,17 @@ export class OperationsController {
     return res.send({ result }); // Send the result back to the client
   }
 
+  @Delete(':id')
+  async clear(@Param('id') id: string, @Res() res: Response) {
+    if (!id) {
+      throw new HttpException("Id required", HttpStatus.PRECONDITION_REQUIRED);
+    }
+    if(await this.operationsService.clearHistory(id)) {
+      return res.status(HttpStatus.OK).send({message: "Operation deleted successfully"})
+    }
+    return res.status(HttpStatus.BAD_REQUEST).send({message: "Failed to clear history"})
+  }
+
+  
 }
 
